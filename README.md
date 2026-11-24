@@ -25,6 +25,8 @@ Akkurat nå går det meste i å validere (parse) input fra CLI. Lenger ned ser d
 
 [Node.js](https://nodejs.org/en), [Git](https://git-scm.com/)
 
+### Steg
+
 1. Kopier
 
 ```sh
