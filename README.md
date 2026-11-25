@@ -26,7 +26,8 @@ At the moment, most of the work is in validating (parsing) input from the CLI. U
 
 ### Prerequisites
 
-[Node.js](https://nodejs.org/en), [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/en) (version in `.nvmrc`)
+- [Git](https://git-scm.com/)
 
 ### Steps
 
