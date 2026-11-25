@@ -1,82 +1,93 @@
 # Skattekalkulator
 
-CLI-program skrevet i TypeScript som gir deg en oversikt over skatten din, basert på lønnsinntekt og eventuelle fradrag.
+A CLI program written in TypeScript that gives you an overview of your Norwegian income tax, based on salary income and any deductions.
 
-## Funksjonalitet
+> The program itself uses Norwegian words as flags (i.e --inntekt) and for error messages
 
-### Planlagt
+## Features
 
-Ved å gi argumenter når du kjører programmet gjennom CLI, som `--inntekt <beløp>`, vil du få tilbake en oversikt over mange viktige skatteutregninger; skatt på alminnelig inntekt, trinnskatt og trygdeavgift. Minstefradrag og personfradrag blir utregnet automatisk og utgjør alminnelig inntekt. Du vil lett se din totale skatt, og effektiv skattesats.
+### Planned
 
-> Utregningene tar ikke med pensjon, næringsinntekt eller Finnmarksfradrag, og gjelder bare for ett inntektsår.
+By passing arguments when running the program from the CLI, such as `--inntekt <amount>`, you will get back an overview of the most important tax calculations: tax on ordinary income (*alminnelig inntekt*), bracket tax (*trinnskatt*) and national insurance contribution (*trygdeavgift*). The standard deduction (*minstefradrag*) and personal allowance (*personfradrag*) are calculated automatically and deducted to arrive at ordinary income. You will easily see your total tax and your effective tax rate.
 
-### Foreløpig
+> The calculations do not include pensions, business income or the Finnmark deduction, and apply to a single income year only.
 
-Akkurat nå går det meste i å validere (parse) input fra CLI. Lenger ned ser du et par eksempler på funksjonalitet foreløpig implementert.
+### Current
 
-## Teknologi
+At the moment, most of the work is in validating (parsing) input from the CLI. Unit tests have also been added with Vitest. Further down you'll find a few examples of the functionality implemented so far.
 
-- **Node.js** for runtime
-- **TypeScript** for funksjonalitet
+## Technology
 
-## Bruk
+- **Node.js** for the runtime
+- **TypeScript** for the implementation
+- **Vitest** for unit tests
 
-### Påkrevd
+## Usage
+
+### Prerequisites
 
 [Node.js](https://nodejs.org/en), [Git](https://git-scm.com/)
 
-### Steg
+### Steps
 
-1. Kopier
+1. Clone
 
 ```sh
 git clone https://github.com/alexdalene/skattekalkulator.git
 ```
 
-2. Installer
+2. Install
 
 ```sh
 npm install
 ```
 
-3. Bygg
+3. Build
 
 ```sh
 npm run build
 ```
 
-4. Kjør
+4. Run
 
 ```sh
-npm run start -- --inntekt <beløp> [--renter <beløp>] [--reisefradrag <beløp>]
+npm run start -- --inntekt <amount> [--renter <amount>] [--reisefradrag <amount>]
 ```
 
-## Eksempler
+5. Test
 
-### Case 1: Alt er skrevet riktig
+```sh
+npm run test
+```
+
+## Examples
+
+### Case 1: Valid input
 
 ```sh
 $ npm run start -- --inntekt 100000
 { inntekt: 100000 }
 ```
 
-### Case 2: Ukjent argument
+### Case 2: Unknown argument
 
 ```sh
 $ npm run start -- --inntekt 100000 --renterrr 50000
-Ukjent argument funnet: --renterrr
+Ukjent argument: --renterrr
+                 ^^^^^^^^^^
 ```
 
-### Case 3: Mangler et påkrevd flagg
+### Case 3: Missing a required flag
 
 ```sh
 $ npm run start -- --renter 50000
-Følgende flagg mangler: --inntekt
+Mangler flagg: --inntekt
+               ^^^^^^^^^
 ```
 
-### Case 4: Feil struktur (verdi)
+### Case 4: Invalid structure (missing value)
 
 ```sh
 $ npm run start -- --inntekt
-Hvert argument må være etterfulgt av en verdi: --inntekt <beløp>
+Bruk: --inntekt <beløp> [--renter <beløp>] [--reisefradrag <beløp>]
 ```
