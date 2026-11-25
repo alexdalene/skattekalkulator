@@ -72,7 +72,7 @@ export default function parseArgs(args: string[]) {
                 if (!Number.isNaN(argValue) && argValue > 0) {
                     obj[argFlag] = argValue;
                 } else {
-                    pointError(`Kun tall og positive verdier: --${argFlag} ${CLI_ARGUMENTS[i + 1]}`, CLI_ARGUMENTS[i + 1]);
+                    pointError(`Kun tall og verdier høyere enn 0: --${argFlag} ${CLI_ARGUMENTS[i + 1]}`, CLI_ARGUMENTS[i + 1]);
                 }
             } else {
                 pointError(`Ukjent argument: ${CLI_ARGUMENTS[i]}`, CLI_ARGUMENTS[i]);
