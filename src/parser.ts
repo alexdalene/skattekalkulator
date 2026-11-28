@@ -1,4 +1,5 @@
 import calculateTax from "./calculations.js";
+import { pointError } from "./functions.js";
 
 interface AllowedFlag {
     name: string;
@@ -42,17 +43,6 @@ export default function parseArgs(args: string[]) {
     });
 
     errorMsg = result.join("");
-
-    // Point to a specific word in a string
-    function pointError(msg: string, word: string): never {
-        const IDX = msg.lastIndexOf(word);
-
-        let point = "^".repeat(word.length);
-        
-        let paddedText = point.padStart(IDX + word.length, " ");
-
-        throw new Error((msg + "\n") + paddedText);
-    }
 
     // Could use filter to find ALL flags that are missing, but opted not to
     const MISSING_FLAG = REQUIRED_FLAGS.find((flag) => !CLI_ARGUMENTS.includes(flag.name));
@@ -103,7 +93,5 @@ export default function parseArgs(args: string[]) {
         else fradrag += input.value;
     });
 
-    const calculated = calculateTax(inntekt, fradrag);
-
-    return calculated;
+    return { inntekt, fradrag };
 };

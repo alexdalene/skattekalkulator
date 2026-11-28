@@ -1,3 +1,28 @@
+import type { Calculated } from "./types.js";
+
+const TRINNSKATT_TABELL = [
+    {
+        innslagspunkt: 226100,
+        sats: 0.017
+    },
+    {
+        innslagspunkt: 318300,
+        sats: 0.040
+    },
+    {
+        innslagspunkt: 725050,
+        sats: 0.137
+    },
+    {
+        innslagspunkt: 980100,
+        sats: 0.168
+    },
+    {
+        innslagspunkt: 1467200,
+        sats: 0.178
+    },
+];
+
 export default function calculateTax(inntekt: number, fradrag: number) {
     let personfradrag = 114540;
     let minstefradrag = Math.min(inntekt * 0.46, 95700);
@@ -8,29 +33,6 @@ export default function calculateTax(inntekt: number, fradrag: number) {
 
     let trinnskatt = 0;
     let sats = 0;
-
-    const TRINNSKATT_TABELL = [
-        {
-            innslagspunkt: 226100,
-            sats: 0.017
-        },
-        {
-            innslagspunkt: 318300,
-            sats: 0.040
-        },
-        {
-            innslagspunkt: 725050,
-            sats: 0.137
-        },
-        {
-            innslagspunkt: 980100,
-            sats: 0.168
-        },
-        {
-            innslagspunkt: 1467200,
-            sats: 0.178
-        },
-    ];
 
     for (let i = 0; i < TRINNSKATT_TABELL.length; i++) {
         if (inntekt > TRINNSKATT_TABELL[i].innslagspunkt) {
@@ -44,7 +46,99 @@ export default function calculateTax(inntekt: number, fradrag: number) {
 
     let totalSkatt = skattAlminneligInntekt + trygdeavgift + trinnskatt;
     let effektivSkattesats = totalSkatt / inntekt;
-    let marginalSkattesats = (22 + 7.6) + (sats * 100);
+    let marginalSkattesats = ((22 + 7.6) + (sats * 100)) / 100;
 
-    return { totalSkatt, effektivSkattesats, marginalSkattesats };
+    const CALCULATED: Calculated[] = [
+        {
+            name: "Personfradrag",
+            amount: personfradrag,
+            type: "currency",
+            group: 2,
+            order: 0,
+            action: "deduct"
+        },
+        {
+            name: "Skattegrunnlag",
+            amount: skattegrunnlag,
+            type: "currency",
+            group: 2,
+            order: 1,
+            action: "sum"
+        },
+        {
+            name: "Minstefradrag",
+            amount: minstefradrag,
+            type: "currency",
+            group: 1,
+            order: 1,
+            action: "deduct"
+        },
+        {
+            name: "Andre fradrag",
+            amount: fradrag,
+            type: "currency",
+            group: 1,
+            order: 2,
+            action: "deduct"
+        },
+        {
+            name: "Alminnelig inntekt",
+            amount: alminneligInntekt,
+            type: "currency",
+            group: 1,
+            order: 3,
+            action: "sum"
+        },
+        {
+            name: "Skatt på alminnelig inntekt",
+            amount: skattAlminneligInntekt,
+            type: "currency",
+            group: 3,
+            order: 0
+        },
+        {
+            name: "Trinnskatt",
+            amount: trinnskatt,
+            type: "currency",
+            group: 3,
+            order: 1
+        },
+        {
+            name: "Trygdeavgift",
+            amount: trygdeavgift,
+            type: "currency",
+            group: 3,
+            order: 2
+        },
+        {
+            name: "Total skatt",
+            amount: totalSkatt,
+            type: "currency",
+            group: 4,
+            order: 0
+        },
+        {
+            name: "Effektiv skattesats",
+            amount: effektivSkattesats,
+            type: "percent",
+            group: 4,
+            order: 1
+        },
+        {
+            name: "Marginal skattesats",
+            amount: marginalSkattesats,
+            type: "percent",
+            group: 4,
+            order: 2
+        },
+        {
+            name: "Bruttoinntekt",
+            amount: inntekt,
+            type: "currency",
+            group: 1,
+            order: 0
+        }
+    ]
+
+    return CALCULATED;
 };
