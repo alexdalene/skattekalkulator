@@ -9,7 +9,7 @@ describe("parseArgs", () => {
                 "100000"
             ]
             
-            const expected = { inntekt: 100000 }
+            const expected = { inntekt: 100000, fradrag: 0 }
             const data = parseArgs(commands);
 
             expect(data).toEqual(expected);
@@ -20,10 +20,12 @@ describe("parseArgs", () => {
                 "--inntekt",
                 "100000",
                 "--renter",
-                "50000"
+                "50000",
+                "--reisefradrag",
+                "3000"
             ]
 
-            const expected = { inntekt: 100000, renter: 50000 }
+            const expected = { inntekt: 100000, fradrag: 53000 }
             const data = parseArgs(commands);
 
             expect(data).toEqual(expected);
